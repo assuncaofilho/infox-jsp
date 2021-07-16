@@ -1,0 +1,9 @@
+package dao;
+
+public abstract class DaoFactory { // classe modelo; não pode ser instanciada diretamente;
+	
+	public static UsuarioDao createUsuarioDao() { // não depende de variável de instância;
+		return new UsuarioDaoJdbc();
+	}
+
+}
