@@ -38,7 +38,8 @@
                                     <!-- Page-body start -->
                                     <div class="page-body">
                                         <div class="row">
-                                              <h1>Conteudo das páginas do sistema</h1>
+                                              <h1></h1>
+                                              <span id="alertaAuth">${msg}</span>
                                         </div>
                                     </div>
                                     <!-- Page-body end -->

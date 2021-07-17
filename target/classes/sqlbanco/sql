@@ -132,3 +132,11 @@ modify column senha varchar(50) not null,
 modify column perfil varchar(30) not null; 
 
 ----------------------------------------------------------
+
+alter table tbclientes modify column nomecli varchar(150) not null,
+modify column endcli varchar(150),
+modify column emailcli varchar(100) not null unique;
+
+---------------------------------------------------------
+
+

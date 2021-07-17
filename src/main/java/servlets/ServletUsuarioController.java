@@ -96,7 +96,7 @@ public class ServletUsuarioController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		try {
+		
 		
 		String id = request.getParameter("id");
 		String nome = request.getParameter("nome");
@@ -108,13 +108,15 @@ public class ServletUsuarioController extends HttpServlet {
 		
 		Usuario usuario = new Usuario();
 		
-		
+		try {
+			
 		usuario.setId(id != null && !id.isEmpty() ? Integer.parseInt(id) : null); // condicao ternária
 		usuario.setNome(nome);
 		usuario.setFone(telefone);
 		usuario.setLogin(login);
 		usuario.setSenha(senha);
 		usuario.setPerfil(perfil);
+		
 		
 		
 		if (!usuarioDao.loginExiste(usuario.getLogin()) && usuario.getId() == null) { // só grava novos usuarios;
@@ -126,7 +128,8 @@ public class ServletUsuarioController extends HttpServlet {
 		
 		}else {
 			
-			if(usuarioDao.loginExiste(usuario.getLogin()) && usuario.getId() != null ) {
+			if(usuarioDao.loginExiste(usuario.getLogin()) && usuario.getId() != null || 
+					!usuarioDao.loginExiste(usuario.getLogin()) && usuario.getId() != null) {
 			//update
 			usuario = usuarioDao.gravarUsuario(usuario);
 			request.setAttribute("msg", "Usuário atualizado com sucesso!");
@@ -144,6 +147,16 @@ public class ServletUsuarioController extends HttpServlet {
 		request.setAttribute("usuario", usuario);
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/usuario.jsp");
 		redirecionar.forward(request, response);
+		
+		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+			// CASO O ADM FORNEÇA UM LOGIN PARA EDITAR QUE JÁ ESTEJA NO BANCO, DEVERÁ REDIRECIONAR PARA A MESMA
+			  // PÁGINA E CAPTURAR O ERRO DO BANCO, POIS LOGIN É UNIQUE.
+			e1.printStackTrace();
+			request.setAttribute("usuario", usuario);
+			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/usuario.jsp");
+			request.setAttribute("msg", "Este login já está em uso! Por favor escolha outro email para o cadastro!");
+			redirecionar.forward(request, response);
+
 		
 			}catch(Exception e) {
 				

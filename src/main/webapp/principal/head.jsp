@@ -57,6 +57,12 @@
       font-style: italic;
       }
       
+      span#alertaAuth {
+      color: red;
+      font-size: 10pt;
+      
+      }
+      
       
       </style>
   </head>

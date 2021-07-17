@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = {"/principal/*" , "/ServletUsuarioController"})/*Intercepta todas as requisiçoes que vierem do projeto ou mapeamento*/
+@WebFilter(urlPatterns = {"/principal/*" , "/ServletUsuarioController", "/ServletClienteController"})/*Intercepta todas as requisiçoes que vierem do projeto ou mapeamento*/
 public class FilterAutenticacao implements Filter {
 	
 	
@@ -60,6 +60,11 @@ public class FilterAutenticacao implements Filter {
 				request.setAttribute("msg", "Por favor realize o login!");
 				redireciona.forward(request, response);
 				return; /*Para a execução e redireciona para o login*/
+			
+			//}else if(!usuarioLogado.equals("admin") && urlParaAutenticar.equals("/principal/usuario.jsp")) {
+			//	RequestDispatcher redireciona = request.getRequestDispatcher("principal.jsp");
+			//	request.setAttribute("msg", "Você não tem permissão para visualizar esta página!");
+			//	redireciona.forward(request, response);
 				
 			}else {
 				chain.doFilter(request, response);

@@ -49,17 +49,17 @@
                                       <span class="pcoded-mcaret"></span>
                                   </a>
                                   <ul class="pcoded-submenu">
-                                      <li class=" ">
-                                          <a href="principal/usuario.jsp" class="waves-effect waves-dark">
+                                      <li class=" " >
+                                          <a href="<%= request.getContextPath()%>/principal/usuario.jsp" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                               <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Usuário</span>
                                               <span class="pcoded-mcaret"></span>
                                           </a>
                                       </li>
                                       <li class=" ">
-                                          <a href="breadcrumb.html" class="waves-effect waves-dark">
+                                          <a href="<%= request.getContextPath()%>/principal/cliente.jsp" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Breadcrumbs</span>
+                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Cliente</span>
                                               <span class="pcoded-mcaret"></span>
                                           </a>
                                       </li>
