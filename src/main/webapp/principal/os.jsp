@@ -58,21 +58,21 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">ID</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" class="form-control" readonly="readonly"
+                                                                    <input type="text" id="id" name="id" class="form-control" readonly="readonly"
                                                                     placeholder="ID" value="${os.id}">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Data</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" name="data" class="form-control"
                                                                     placeholder="Data" readonly="readonly" value="${os.data}">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
                                                                     <label class="col-sm-2 col-form-label">Tipo</label>
                                                                     <div class="col-sm-10">
-                                                                        <select id="tipo" name="select" class="form-control" required="required">
+                                                                        <select id="tipo" name="tipo" class="form-control" required="required">
                                                                             <option value="opt1">OS</option>
                                                                             <option value="opt2">Orçamento</option>
                                                                         </select>
@@ -82,7 +82,7 @@
                                                               <div class="form-group row">
                                                                     <label class="col-sm-2 col-form-label">Situação</label>
                                                                     <div class="col-sm-10">
-                                                                        <select id="situacao" name="select" class="form-control" required="required">
+                                                                        <select id="situacao" name="situacao" class="form-control" required="required">
                                                                             <option value="opt1">Entrega OK</option>
                                                                             <option value="opt2">Aguardando Peças</option>
                                                                             <option value="opt3">Na Bancada</option>
@@ -95,7 +95,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Equipamento</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" name="equipamento" class="form-control"
                                                                     placeholder="Equipamento" required="required" value="${os.equipamento}">
                                                                 </div>
                                                             </div>
@@ -103,7 +103,7 @@
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Defeito</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" name="defeito" class="form-control"
                                                                     placeholder="Defeito" required="required" value="${os.defeito}">
                                                                 </div>
                                                             </div>
@@ -112,35 +112,35 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Serviço</label>
                                                                     <div class="col-sm-10">
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="text" name="servico" class="form-control"
                                                                         placeholder="Serviço" required="required" value="${os.servico}">
                                                                     </div>
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Técnico</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" id="nometecnico" class="form-control"
+                                                                    <input type="text" id="nometecnico" name="nometecnico" class="form-control"
                                                                     placeholder="Técnico" required="required" readonly="readonly" value="${nomeTec}">
                                                                 </div>
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Valor</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="number" class="form-control"
+                                                                    <input type="number" name="valor" class="form-control"
                                                                     placeholder="Valor" required="required" value="${os.valor}">
                                                                 </div>
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">ID Cliente</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" id="idcliente" class="form-control"
+                                                                    <input type="text" id="idcliente" name="idcliente" class="form-control"
                                                                     placeholder="ID Cliente" readonly="readonly" required="required" value="${idCli}">
                                                                 </div>
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Cliente</label> 
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" id="nomecliente" class="form-control"
+                                                                    <input type="text" id="nomecliente" name="nomecliente" class="form-control"
                                                                     placeholder="Cliente" readonly="readonly" required="required" value="${nomeCli}">
                                                                 </div>
                                                             </div>
@@ -342,9 +342,9 @@ function verEditar(id){
 function verEditarCliOs(id, nome){
 	
 	
-	document.getElementById("nomecliente").value = id; 
+	document.getElementById("nomecliente").value = nome; 
 	
-	document.getElementById("idcliente").value = nome; 
+	document.getElementById("idcliente").value = id; 
 	
 	document.getElementById("close-modal-cliente").click();
 	
@@ -407,28 +407,31 @@ function criarDelete(){
 
 function criarDeleteComAjax(){
 	
-	if(confirm("Deseja realmente excluir este usuário?")){
+	if(confirm("Deseja realmente excluir esta OS?")){
 		
-		var urlAction = document.getElementById("formCli").action;
-		var idUser = document.getElementById("id").value;
+		var urlAction = document.getElementById("formOS").action;
+		var id = document.getElementById("id").value;
 		
 		$.ajax({
 			
 			method: "get",
 			url: urlAction,
-			data: "id=" + idUser + "&acao=deletarajax",
+			data: "id=" + id + "&acao=deletarajax",
 			success: function (response) {
-				limparForm();
+				
+				limparNovaOs();
 				document.getElementById("msg").textContent = response;
+				
 			}		
 		
 			}).fail(function(xhr, status, errorThrown){
-				alert("Erro ao excluir usuário por ID: " + xhr.responseText);
+				alert("Erro ao excluir OS por ID: " + xhr.responseText);
 		});
 		
 		
 	}
-		
+	
+	
 }
 	
 

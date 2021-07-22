@@ -36,12 +36,22 @@ public class OsDaoJdbc implements OsDao {
 	                pst.setString(7, Double.toString(o.getValor()));
 	                pst.setString(8, Integer.toString(o.getIdcli()));
 
-	                ResultSet rs = pst.executeQuery();
-	                rs.next();
-	                retorno = this.pesquisar(rs.getString("os"));
+	                //ResultSet rs = pst.executeQuery(); somente para pesquisa
+	                int rec = pst.executeUpdate(); //usado para DML (insert, update  e delete)
 	                
+	                if(rec > 0) {
+	                
+	                String getLastInsertId = "SELECT LAST_INSERT_ID();";
+	                PreparedStatement pst2 = connection.prepareStatement(getLastInsertId);
+	                ResultSet rs = pst2.executeQuery();
+	                rs.next();	
+	                retorno = this.pesquisar(rs.getString("LAST_INSERT_ID()"));
+	                
+	                connection.commit();
+	                
+	                }
 	            
-			connection.commit();
+			
 			
 			
 			}else {
@@ -59,12 +69,14 @@ public class OsDaoJdbc implements OsDao {
 		                pst.setString(7, Double.toString(o.getValor()));
 		                pst.setString(8, Integer.toString(o.getId()));
 		                
-		                ResultSet rs = pst.executeQuery();
-		                rs.next();
-		                retorno = this.pesquisar(rs.getString("os"));
+		                int update = pst.executeUpdate();
+		                if (update > 0) {
+		                	
+		                retorno = this.pesquisar(o.getId().toString());
 				
-				connection.commit();
-				
+		                connection.commit();
+		                
+		                }
 			
 			}
 			

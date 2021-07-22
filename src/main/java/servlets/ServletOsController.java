@@ -89,34 +89,8 @@ public class ServletOsController extends HttpServlet {
 				request.setAttribute("idCli", cliente.getId());
 				request.getRequestDispatcher("principal/os.jsp").forward(request, response);
 		 }
-		 else if (acao != null && !acao.isEmpty() && acao.equals("buscareditarclios")) {
-				
-			    String id = request.getParameter("id");
-			  
-			    Cliente cliente = clienteDao.consultaID(id);
-			    
-				ObjectMapper mapper = new ObjectMapper();
-				 
-				String json = mapper.writeValueAsString(cliente);
-				 
-				response.getWriter().write(json);
-			 
-			 
-			  /* request.setAttribute("msg", "Cadastrando nova OS");
-				request.setAttribute("nomeCli", cliente.getNome());
-				request.setAttribute("idCli", cliente.getId());
-				request.getRequestDispatcher("principal/os.jsp").forward(request, response);*/
-		 }
+
 		 
-		 else if (acao != null && !acao.isEmpty() && acao.equals("buscareditartecos")) {
-				
-			    String id = request.getParameter("id");
-			  
-			    Usuario tecnico = usuarioDao.consultaUsuarioID(id);
-			 
-				request.setAttribute("nomeTec", tecnico.getNome());
-				request.getRequestDispatcher("principal/os.jsp").forward(request, response);
-		 }
 		 
 		 else if (acao != null && !acao.isEmpty() && acao.equals("buscartecnicoajax")) {
 				
@@ -172,9 +146,9 @@ public class ServletOsController extends HttpServlet {
 		String equipamento = request.getParameter("equipamento");
 		String defeito = request.getParameter("defeito");
 		String servico = request.getParameter("servico");
-		String tecnico = request.getParameter("tecnico");
-		String valor = request.getParameter("valor");
-		String idcli = request.getParameter("idcli");
+		String tecnico = request.getParameter("nometecnico");
+		Double valor = Double.parseDouble(request.getParameter("valor"));
+		String idcliente = request.getParameter("idcliente");
 		
 	
 		
@@ -184,14 +158,40 @@ public class ServletOsController extends HttpServlet {
 		
 		os.setId(id != null && !id.isEmpty() ? Integer.parseInt(id) : null); // condicao ternária
 		os.setData(data != null && !data.isEmpty() ? data : null);
-		os.setTipo(tipo);
-		os.setSituacao(situacao);
+		
+		switch (tipo) {
+		case "opt1":
+			os.setTipo("OS");
+			break;
+		case "opt2":
+			os.setTipo("Orçamento");
+			break;	
+		}
+		
+		 switch (situacao) {
+		    case "opt1":
+		      os.setSituacao("Entrega OK");
+		      break;
+		    case "opt2":
+			      os.setSituacao("Aguardando Peças");
+			      break;
+		    case "opt3":
+			      os.setSituacao("Na Bancada");
+			      break;
+		    case "opt4":
+			      os.setSituacao("Aguardando Aprovação");
+			      break;
+		    case "opt5":
+			      os.setSituacao("Cliente não resgatou o produto");
+			      break;
+		 }
+		
 		os.setEquipamento(equipamento);
 		os.setDefeito(defeito);
 		os.setServico(servico);
 		os.setTecnico(tecnico);
-		os.setValor(Double.parseDouble(valor));
-		os.setIdcli(Integer.parseInt(idcli));
+		os.setValor(valor);
+		os.setIdcli(Integer.parseInt(idcliente));
 		
 		
 		if (os.getId() == null && os.getIdcli() != null) { // nova os e cliente carregado na tela
@@ -200,6 +200,13 @@ public class ServletOsController extends HttpServlet {
 		
 		request.setAttribute("msg", "OS cadastrada com sucesso!");
 		
+		request.setAttribute("os", os);
+		request.setAttribute("nomeTec", os.getTecnico());
+		request.setAttribute("idCli", os.getIdcli());
+		request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
+		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
+		redirecionar.forward(request, response);
+		
 		
 		}else {
 			
@@ -207,22 +214,26 @@ public class ServletOsController extends HttpServlet {
 			//update
 			os = osDao.cadastrar(os);
 			request.setAttribute("msg", "OS atualizada com sucesso!");
+			
+			request.setAttribute("os", os);
+			request.setAttribute("nomeTec", os.getTecnico());
+			request.setAttribute("idCli", os.getIdcli());
+			request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
+			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
+			redirecionar.forward(request, response);
 	
 				
 			}else {
-				if(os.getIdcli() == null) {
+				if(os.getId() == null && os.getIdcli() == null) {
 			
 			request.setAttribute("msg", "Vincule um cliente para cadastrar a OS!");
 			
-				} 
-			
+					} 
+				
+				}
 			}
-		}
-		
-		request.setAttribute("os", os);
-		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
-		redirecionar.forward(request, response);
-		
+			
+			
 				
 			}
 			catch(Exception e) {
