@@ -154,7 +154,7 @@ public class ServletUsuarioController extends HttpServlet {
 			e1.printStackTrace();
 			request.setAttribute("usuario", usuario);
 			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/usuario.jsp");
-			request.setAttribute("msg", "Este login já está em uso! Por favor escolha outro email para o cadastro!");
+			request.setAttribute("msg", "Este login já está em uso! Por favor escolha outro login para o cadastro!");
 			redirecionar.forward(request, response);
 
 		

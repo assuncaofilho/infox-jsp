@@ -237,7 +237,7 @@ function buscaUsuarioAjax(){
 						
 					//alert(response);
 						
-					var json = JSON.parse(response);
+					var json = JSON.parse(response); // criacao do objeto em JavaScript
 					
 					//console.info(json);
 					

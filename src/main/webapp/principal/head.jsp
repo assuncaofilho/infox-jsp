@@ -63,7 +63,10 @@
       
       }
       
+      form#formOS label {
+      font-style: italic;
       
+      }
       </style>
   </head>
     
