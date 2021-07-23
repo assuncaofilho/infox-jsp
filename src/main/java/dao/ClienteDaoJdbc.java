@@ -159,6 +159,7 @@ public class ClienteDaoJdbc implements ClienteDao {
 	
 	public void deletar(String id) throws Exception {
 		
+		
 		String sql = "DELETE FROM tbclientes WHERE idcli = ?;";
 		
 		PreparedStatement prepareSql = connection.prepareStatement(sql);

@@ -183,7 +183,8 @@ function criarDeleteComAjax(){
 			data: "id=" + idUser + "&acao=deletarajax",
 			success: function (response) {
 				limparForm();
-				document.getElementById("msg").textContent = response;
+				document.getElementById("msg").textContent = "";
+				alert(response);
 			}		
 		
 			}).fail(function(xhr, status, errorThrown){

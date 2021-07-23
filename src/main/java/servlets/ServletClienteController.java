@@ -84,12 +84,15 @@ public class ServletClienteController extends HttpServlet {
 		 
 		
 		 
-		 
-		}catch (Exception e) {
+		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+			e1.printStackTrace();
+			response.getWriter().write("Não é possível excluir este cliente pois ele está vinculado à uma ou mais Ordens de Serviço.");
+			
+	    }catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			//RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
-			redirecionar.forward(request, response);
+			//redirecionar.forward(request, response);
 		}
 
 	}
