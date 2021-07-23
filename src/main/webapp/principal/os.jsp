@@ -51,22 +51,22 @@
                                                     </div>
                                                     <div class="card-block">
                                                         <h4 class="sub-title">Dados da OS</h4>
-                                                        <form id="formOS" action="<%= request.getContextPath() %>/ServletOsController" method="post" accept-charset="utf-8">
+                                                        <form id="formOS" action="<%= request.getContextPath() %>/ServletOsController" onsubmit= "return check_form()" method="post"  accept-charset="utf-8">
                                                         
                                                         	<input type="hidden" name="acao" id="acao" value="">
                                                         
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">ID</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" id="id" name="id" class="form-control" readonly="readonly"
+                                                                    <input type="text" id="id" name="id" class="form-control" readonly="readonly" required="required"
                                                                     placeholder="ID" value="${os.id}">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Data</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="data" class="form-control"
-                                                                    placeholder="Data" readonly="readonly" value="${os.data}">
+                                                                    <input type="text" id="data" name="data" class="form-control"
+                                                                    placeholder="Data" readonly="readonly" required="required" value="${os.data}">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
@@ -95,7 +95,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Equipamento</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="equipamento" class="form-control"
+                                                                    <input type="text" id="equipamento" name="equipamento" class="form-control"
                                                                     placeholder="Equipamento" required="required" value="${os.equipamento}">
                                                                 </div>
                                                             </div>
@@ -103,7 +103,7 @@
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Defeito</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="defeito" class="form-control"
+                                                                    <input type="text" id="defeito" name="defeito" class="form-control"
                                                                     placeholder="Defeito" required="required" value="${os.defeito}">
                                                                 </div>
                                                             </div>
@@ -112,7 +112,7 @@
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Serviço</label>
                                                                     <div class="col-sm-10">
-                                                                        <input type="text" name="servico" class="form-control"
+                                                                        <input type="text" id="servico" name="servico" class="form-control"
                                                                         placeholder="Serviço" required="required" value="${os.servico}">
                                                                     </div>
                                                             </div>
@@ -120,13 +120,13 @@
                                                                 <label class="col-sm-2 col-form-label">Técnico</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" id="nometecnico" name="nometecnico" class="form-control"
-                                                                    placeholder="Técnico" required="required" readonly="readonly" value="${nomeTec}">
+                                                                    placeholder="Técnico" required="required" readonly="readonly"  value="${nomeTec}">
                                                                 </div>
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Valor</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="number" name="valor" class="form-control"
+                                                                    <input type="number" onchange="setTwoNumberDecimal" id="valor" name="valor" min="0" max="9999999" step="0.01" class="form-control"
                                                                     placeholder="Valor" required="required" value="${os.valor}">
                                                                 </div>
                                                             </div>
@@ -139,7 +139,7 @@
                                                             </div>
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Cliente</label> 
-                                                                <div class="col-sm-10">
+                                                                <div class="col-sm-10" >
                                                                     <input type="text" id="nomecliente" name="nomecliente" class="form-control"
                                                                     placeholder="Cliente" readonly="readonly" required="required" value="${nomeCli}">
                                                                 </div>
@@ -328,6 +328,40 @@ window.onload = function () { // chama a função carregaCombos assim que a tela é
     
 }
 
+function setTwoNumberDecimal(event){
+	this.value = parseFloat(this.value).toFixed(2);
+}
+
+function check_form(){
+	
+	
+	var nometec = document.getElementById("nometecnico").value;
+	var idcli = document.getElementById("idcliente").value;
+	var nomecli = document.getElementById("nomecliente").value;
+	var arraychecklist = [nometec , idcli , nomecli]; 
+	var count = 0;
+	var valid = false;
+	
+	for(p=0;p<arraychecklist.length;p++){
+		if(arraychecklist[p] != null && arraychecklist[p] != "" && arraychecklist[p].trim() != ""){
+			count = count + 1;
+		}
+	}
+	
+	if(count < arraychecklist.length){
+		alert("Busque um técnico e um cliente para completar a operação!");
+		valid = false;
+		}else{
+			if(count = arraychecklist.length){
+			valid = true;
+			}
+		}
+		
+		return valid;
+	}
+	
+
+
 
 function verEditar(id){
 	
@@ -405,7 +439,23 @@ function criarDelete(){
 	}
 }
 
+
+
 function criarDeleteComAjax(){
+	
+	
+	
+	//var count = 0;
+	
+	//for(p=0;p<elementos.legth;p++){
+	//	if(elementos[p].value != null && elementos[p].value != "" && elementos[p].trim() != ""){
+	//		count = count + 1;
+	//	}
+	//}
+	
+	var idOs = document.getElementById("id").value;
+	
+	if(idOs != null && idOs != "" && idOs.trim() != "" ){
 	
 	if(confirm("Deseja realmente excluir esta OS?")){
 		
@@ -431,6 +481,9 @@ function criarDeleteComAjax(){
 		
 	}
 	
+  }else{
+	  alert("Busque uma OS para ser excluída!");
+  }
 	
 }
 	
