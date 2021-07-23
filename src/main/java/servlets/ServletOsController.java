@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,21 @@ public class ServletOsController extends HttpServlet {
 	private OsDao osDao = DaoFactory.createOsDao();
 	private ClienteDao clienteDao = DaoFactory.createClienteDao();
 	private UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
+	
+	private String dataOsFormatada(String dataOs) {
+	     
+		try {
+	     Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dataOs);
+	     
+	     String dataOsFormatted = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
+	     
+	     return dataOsFormatted;
+	     
+		}catch(Exception e) {
+			throw new RuntimeException();
+		}
+		
+	}
 
     public ServletOsController() {
     }
@@ -77,6 +94,8 @@ public class ServletOsController extends HttpServlet {
 			    String id = request.getParameter("id");
 			 
 			     Os os = osDao.pesquisar(id);
+			     
+			     os.setData(dataOsFormatada(os.getData()));
 			     
 			     Cliente cliente = clienteDao.consultaID(os.getIdcli().toString());
 			 
@@ -200,10 +219,14 @@ public class ServletOsController extends HttpServlet {
 		
 		request.setAttribute("msg", "OS cadastrada com sucesso!");
 		
+		os.setData(dataOsFormatada(os.getData()));
+		
 		request.setAttribute("os", os);
 		request.setAttribute("nomeTec", os.getTecnico());
 		request.setAttribute("idCli", os.getIdcli());
 		request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
+		request.setAttribute("cboTipo", os.getTipo());
+		request.setAttribute("cboSituacao", os.getSituacao());
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
 		redirecionar.forward(request, response);
 		
@@ -215,10 +238,14 @@ public class ServletOsController extends HttpServlet {
 			os = osDao.cadastrar(os);
 			request.setAttribute("msg", "OS atualizada com sucesso!");
 			
+			os.setData(dataOsFormatada(os.getData()));
+			
 			request.setAttribute("os", os);
 			request.setAttribute("nomeTec", os.getTecnico());
 			request.setAttribute("idCli", os.getIdcli());
 			request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
+			request.setAttribute("cboTipo", os.getTipo());
+			request.setAttribute("cboSituacao", os.getSituacao());
 			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
 			redirecionar.forward(request, response);
 	
