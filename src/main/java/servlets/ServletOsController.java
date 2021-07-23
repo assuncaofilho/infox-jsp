@@ -98,10 +98,14 @@ public class ServletOsController extends HttpServlet {
 			     os.setData(dataOsFormatada(os.getData()));
 			     
 			     Cliente cliente = clienteDao.consultaID(os.getIdcli().toString());
+			     
+			     Usuario tecAtual = usuarioDao.consultaUsuarioID(os.getIdtec().toString());
 			 
 			 
 			    request.setAttribute("msg", "OS em edição");
 				request.setAttribute("os", os);
+				request.setAttribute("idTec", os.getIdtec());
+				request.setAttribute("nomeTec", tecAtual.getNome());
 				request.setAttribute("cboTipo", os.getTipo());
 				request.setAttribute("cboSituacao", os.getSituacao());
 				request.setAttribute("nomeCli", cliente.getNome());
@@ -165,10 +169,10 @@ public class ServletOsController extends HttpServlet {
 		String equipamento = request.getParameter("equipamento");
 		String defeito = request.getParameter("defeito");
 		String servico = request.getParameter("servico");
-		String tecnico = request.getParameter("nometecnico");
 		Double valor = Double.parseDouble(request.getParameter("valor"));
 		String idcliente = request.getParameter("idcliente");
-		
+		String idtecnico = request.getParameter("idtecnico");
+		String tecnico = request.getParameter("nometecnico");
 	
 		
 		Os os = new Os();
@@ -207,13 +211,13 @@ public class ServletOsController extends HttpServlet {
 		
 		os.setEquipamento(equipamento);
 		os.setDefeito(defeito);
-		os.setServico(servico);
-		os.setTecnico(tecnico);
+		os.setServico(servico);		
 		os.setValor(valor);
 		os.setIdcli(Integer.parseInt(idcliente));
+		os.setIdtec(Integer.parseInt(idtecnico));
 		
 		
-		if (os.getId() == null && os.getIdcli() != null) { // nova os e cliente carregado na tela
+		if (os.getId() == null) { // nova os e cliente carregado na tela
 		//insert
 		os = osDao.cadastrar(os); // grava e retorna o mesmo objeto vindo de uma consulta;
 		
@@ -222,7 +226,8 @@ public class ServletOsController extends HttpServlet {
 		os.setData(dataOsFormatada(os.getData()));
 		
 		request.setAttribute("os", os);
-		request.setAttribute("nomeTec", os.getTecnico());
+		request.setAttribute("nomeTec", tecnico);
+		request.setAttribute("idTec", os.getIdtec());
 		request.setAttribute("idCli", os.getIdcli());
 		request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
 		request.setAttribute("cboTipo", os.getTipo());
@@ -233,7 +238,7 @@ public class ServletOsController extends HttpServlet {
 		
 		}else {
 			
-			if(os.getId() != null && os.getIdcli() != null) {
+			if(os.getId() != null) {
 			//update
 			os = osDao.cadastrar(os);
 			request.setAttribute("msg", "OS atualizada com sucesso!");
@@ -241,7 +246,8 @@ public class ServletOsController extends HttpServlet {
 			os.setData(dataOsFormatada(os.getData()));
 			
 			request.setAttribute("os", os);
-			request.setAttribute("nomeTec", os.getTecnico());
+			request.setAttribute("nomeTec", tecnico);
+			request.setAttribute("idTec", os.getIdtec());
 			request.setAttribute("idCli", os.getIdcli());
 			request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
 			request.setAttribute("cboTipo", os.getTipo());
@@ -251,9 +257,9 @@ public class ServletOsController extends HttpServlet {
 	
 				
 			}else {
-				if(os.getId() == null && os.getIdcli() == null) {
+				if(os.getId() == null && os.getIdcli() == null && os.getIdtec() == null) {
 			
-			request.setAttribute("msg", "Vincule um cliente para cadastrar a OS!");
+			request.setAttribute("msg", "Vincule um cliente e/ou técnico para cadastrar a OS!");
 			
 					} 
 				

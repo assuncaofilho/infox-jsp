@@ -13,9 +13,9 @@ public class Os implements Serializable {
     private String equipamento;
     private String defeito;
     private String servico;
-    private String tecnico;
     private Double valor;
     private Integer idcli;
+    private Integer idtec;
     
     
 	public boolean isNovo() {
@@ -72,12 +72,6 @@ public class Os implements Serializable {
 	public void setServico(String servico) {
 		this.servico = servico;
 	}
-	public String getTecnico() {
-		return tecnico;
-	}
-	public void setTecnico(String tecnico) {
-		this.tecnico = tecnico;
-	}
 	public Double getValor() {
 		return valor;
 	}
@@ -90,6 +84,16 @@ public class Os implements Serializable {
 	public void setIdcli(Integer idcli) {
 		this.idcli = idcli;
 	}
+
+	public Integer getIdtec() {
+		return idtec;
+	}
+	
+	public void setIdtec(Integer idtec) {
+		this.idtec = idtec;
+	}
+	
+	
     
     
 }

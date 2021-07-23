@@ -21,7 +21,7 @@ public class OsDaoJdbc implements OsDao {
 		
 		if (o.isNovo()) {/*Grava um novo*/
 			
-			String cadastrar = "insert into tbos (os, data_os, tipo, situacao, equipamento, defeito, servico, tecnico, valor, idcli) "
+			String cadastrar = "insert into tbos (os, data_os, tipo, situacao, equipamento, defeito, servico, valor, idcli, idtec) "
 	                + "values (default, default, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	        
@@ -32,9 +32,9 @@ public class OsDaoJdbc implements OsDao {
 	                pst.setString(3, o.getEquipamento());
 	                pst.setString(4, o.getDefeito());
 	                pst.setString(5, o.getServico());
-	                pst.setString(6, o.getTecnico());
-	                pst.setString(7, Double.toString(o.getValor()));
-	                pst.setString(8, Integer.toString(o.getIdcli()));
+	                pst.setString(6, Double.toString(o.getValor()));
+	                pst.setString(7, Integer.toString(o.getIdcli()));
+	                pst.setString(8, Integer.toString(o.getIdtec()));
 
 	                //ResultSet rs = pst.executeQuery(); somente para pesquisa
 	                int rec = pst.executeUpdate(); //usado para DML (insert, update  e delete)
@@ -56,7 +56,7 @@ public class OsDaoJdbc implements OsDao {
 			
 			}else {
 				
-				String editar = "update tbos set tipo=?, situacao=?, equipamento=?, defeito=?, servico=?, tecnico=?, valor=? where os=?";
+				String editar = "update tbos set tipo=?, situacao=?, equipamento=?, defeito=?, servico=?, valor=?, idtec=? where os=?";
 		     
 						PreparedStatement pst;
 		                pst = connection.prepareStatement(editar);
@@ -65,9 +65,10 @@ public class OsDaoJdbc implements OsDao {
 		                pst.setString(3, o.getEquipamento());
 		                pst.setString(4, o.getDefeito());
 		                pst.setString(5, o.getServico());
-		                pst.setString(6, o.getTecnico());
-		                pst.setString(7, Double.toString(o.getValor()));
-		                pst.setString(8, Integer.toString(o.getId()));
+		                pst.setString(6, Double.toString(o.getValor()));
+		                pst.setString(7, Integer.toString(o.getIdtec()));
+		                pst.setString(8, o.getId().toString());
+		                
 		                
 		                int update = pst.executeUpdate();
 		                if (update > 0) {
@@ -108,9 +109,9 @@ public class OsDaoJdbc implements OsDao {
                   encontrada.setEquipamento(rs.getString("equipamento")); 
                   encontrada.setDefeito(rs.getString("defeito"));
                   encontrada.setServico(rs.getString("servico")); 
-                  encontrada.setTecnico(rs.getString("tecnico")); 
                   encontrada.setValor(rs.getDouble("valor"));
                   encontrada.setIdcli(rs.getInt("idcli"));
+                  encontrada.setIdtec(rs.getInt("idtec"));
                     
                  }
             return encontrada;

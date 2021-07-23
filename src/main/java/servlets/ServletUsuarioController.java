@@ -82,16 +82,15 @@ public class ServletUsuarioController extends HttpServlet {
 			 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		 }
 		 
-		
-		 
-		 
-		}catch (Exception e) {
+		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+			e1.printStackTrace();
+			response.getWriter().write("Não é possível excluir este usuário pois ele está vinculado à uma ou mais Ordens de Serviço.");
+			
+	    }catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
-			redirecionar.forward(request, response);
+			request.getRequestDispatcher("principal/cliente.jsp").forward(request, response);
 		}
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

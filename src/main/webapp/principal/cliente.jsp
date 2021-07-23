@@ -171,7 +171,11 @@ function criarDelete(){
 
 function criarDeleteComAjax(){
 	
-	if(confirm("Deseja realmente excluir este usuário?")){
+	var idCliente = document.getElementById("id").value;
+	
+	if(idCliente != null && idCliente != "" && idCliente.trim() != "" ){
+	
+	if(confirm("Deseja realmente excluir este cliente?")){
 		
 		var urlAction = document.getElementById("formCli").action;
 		var idUser = document.getElementById("id").value;
@@ -192,8 +196,11 @@ function criarDeleteComAjax(){
 		});
 		
 		
-	}
+		}
 		
+	}else{
+		alert("Busque um cliente para ser excluído!");
+	}
 }
 	
 

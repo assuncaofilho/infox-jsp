@@ -176,6 +176,10 @@ function criarDelete(){
 
 function criarDeleteComAjax(){
 	
+	var idUsuario = document.getElementById("id").value;
+	
+	if(idUsuario != null && idUsuario != "" && idUsuario.trim() != "" ){
+	
 	if(confirm("Deseja realmente excluir este usuário?")){
 		
 		var urlAction = document.getElementById("formUser").action;
@@ -188,7 +192,8 @@ function criarDeleteComAjax(){
 			data: "id=" + idUser + "&acao=deletarajax",
 			success: function (response) {
 				limparForm();
-				document.getElementById("msg").textContent = response;
+				document.getElementById("msg").textContent = "";
+				alert(response);
 			}		
 		
 			}).fail(function(xhr, status, errorThrown){
@@ -197,6 +202,10 @@ function criarDeleteComAjax(){
 		
 		
 	}
+
+  }else{
+	  alert("Busque um Usuário para ser excluído!");
+  }
 		
 }
 	

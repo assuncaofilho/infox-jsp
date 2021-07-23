@@ -139,4 +139,30 @@ modify column emailcli varchar(100) not null unique;
 
 ---------------------------------------------------------
 
+MODIFICAÇÃO DA TABELA OS PARA VINCULAR UM TÉCNICO COMO FK
+
+CREATE TABLE `tbos` (
+  `os` int(11) NOT NULL AUTO_INCREMENT,
+  `data_os` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tipo` varchar(30) NOT NULL,
+  `situacao` varchar(50) NOT NULL,
+  `equipamento` varchar(150) NOT NULL,
+  `defeito` varchar(150) NOT NULL,
+  `servico` varchar(150) NOT NULL,
+  `valor` decimal(10,2) DEFAULT NULL,
+  `idcli` int(11) NOT NULL,
+  `idtec` int(11) NOT NULL,
+  PRIMARY KEY (`os`),
+  KEY `idcli` (`idcli`),
+  CONSTRAINT `tbos_ibfk_1` FOREIGN KEY (`idcli`) REFERENCES `tbclientes` (`idcli`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+
+----------------------------------
+
+ALTER TABLE tbos ADD CONSTRAINT tbos_ibfk_2 
+FOREIGN KEY(idtec) REFERENCES tbusuarios(iduser);
+
+---------------------------------------------
+
 

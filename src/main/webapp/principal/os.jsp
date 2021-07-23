@@ -116,6 +116,15 @@
                                                                         placeholder="Serviço" required="required" value="${os.servico}">
                                                                     </div>
                                                             </div>
+                                                            
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-2 col-form-label">ID Técnico</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" id="idtecnico" name="idtecnico" class="form-control"
+                                                                    placeholder="ID Técnico" required="required" readonly="readonly"  value="${idTec}">
+                                                                </div>
+                                                            </div>
+                                                            
                                                              <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">Técnico</label>
                                                                 <div class="col-sm-10">
@@ -334,11 +343,11 @@ function setTwoNumberDecimal(event){
 
 function check_form(){
 	
-	
+	var idtec = document.getElementById("idtecnico").value;
 	var nometec = document.getElementById("nometecnico").value;
 	var idcli = document.getElementById("idcliente").value;
 	var nomecli = document.getElementById("nomecliente").value;
-	var arraychecklist = [nometec , idcli , nomecli]; 
+	var arraychecklist = [idtec, nometec , idcli , nomecli]; 
 	var count = 0;
 	var valid = false;
 	
@@ -349,7 +358,7 @@ function check_form(){
 	}
 	
 	if(count < arraychecklist.length){
-		alert("Busque um técnico e um cliente para completar a operação!");
+		alert("Busque um técnico e/ou um cliente para completar a operação!");
 		valid = false;
 		}else{
 			if(count = arraychecklist.length){
@@ -386,11 +395,13 @@ function verEditarCliOs(id, nome){
 	
 }
 
-function verEditarTecOs(nome){
+function verEditarTecOs(id, nome){
 	
 	
 	
 	document.getElementById("close-modal-tecnico").click();
+	
+	document.getElementById("idtecnico").value = id;
 	
 	document.getElementById("nometecnico").value = nome; 
 	
@@ -470,7 +481,8 @@ function criarDeleteComAjax(){
 			success: function (response) {
 				
 				limparNovaOs();
-				document.getElementById("msg").textContent = response;
+				document.getElementById("msg").textContent = "";
+				alert(response);
 				
 			}		
 		
@@ -540,7 +552,7 @@ function buscaTecnicoAjax(){
 						
 						for( var p = 0; p < json.length; p++){
 						
-						$('#tbtecResult > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td><td><button type="button" class="btn btn-info" onclick="verEditarTecOs(\''+json[p].nome+'\');">Selecionar</button></td></tr>');
+						$('#tbtecResult > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td><td><button type="button" class="btn btn-info" onclick="verEditarTecOs(\''+json[p].id+'\',\''+json[p].nome+'\');">Selecionar</button></td></tr>');
 											
 						
 						}
