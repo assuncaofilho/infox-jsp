@@ -82,7 +82,7 @@ public class ServletUsuarioController extends HttpServlet {
 			 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		 }
 		 
-		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+		}catch(	java.sql.SQLIntegrityConstraintViolationException e1) {
 			e1.printStackTrace();
 			response.getWriter().write("Não é possível excluir este usuário pois ele está vinculado à uma ou mais Ordens de Serviço.");
 			
@@ -147,7 +147,7 @@ public class ServletUsuarioController extends HttpServlet {
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/usuario.jsp");
 		redirecionar.forward(request, response);
 		
-		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+		}catch(	java.sql.SQLIntegrityConstraintViolationException e1) {
 			// CASO O ADM FORNEÇA UM LOGIN PARA EDITAR QUE JÁ ESTEJA NO BANCO, DEVERÁ REDIRECIONAR PARA A MESMA
 			  // PÁGINA E CAPTURAR O ERRO DO BANCO, POIS LOGIN É UNIQUE.
 			e1.printStackTrace();

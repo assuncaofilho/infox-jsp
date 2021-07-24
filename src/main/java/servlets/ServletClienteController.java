@@ -84,7 +84,7 @@ public class ServletClienteController extends HttpServlet {
 		 
 		
 		 
-		}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+		}catch(	java.sql.SQLIntegrityConstraintViolationException e1) {
 			e1.printStackTrace();
 			response.getWriter().write("Não é possível excluir este cliente pois ele está vinculado à uma ou mais Ordens de Serviço.");
 			
@@ -148,7 +148,7 @@ public class ServletClienteController extends HttpServlet {
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/cliente.jsp");
 		redirecionar.forward(request, response);
 		
-			}catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e1) {
+			}catch(	java.sql.SQLIntegrityConstraintViolationException e1) {
 				// CASO O CLIENTE FORNEÇA UM EMAIL PARA EDITAR QUE JÁ ESTEJA NO BANCO, DEVERÁ REDIRECIONAR PARA A MESMA
 				  // PÁGINA E CAPTURAR O ERRO DO BANCO, POIS EMAIL É UNIQUE.
 				e1.printStackTrace();

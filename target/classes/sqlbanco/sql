@@ -165,4 +165,72 @@ FOREIGN KEY(idtec) REFERENCES tbusuarios(iduser);
 
 ---------------------------------------------
 
+ORDEM DE EXECUÇÃO PARA GERAÇÃO DE BANCO
+
+----------------------------------------------
+----------------------------------------------
+
+create database dbinfox;
+
+use dbinfox;
+
+CREATE TABLE `tbusuarios` (
+  `iduser` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(50) NOT NULL,
+  `telefone` varchar(15) DEFAULT NULL,
+  `login` varchar(15) NOT NULL,
+  `senha` varchar(15) NOT NULL,
+  `perfil` varchar(30) NOT NULL,
+  PRIMARY KEY (`iduser`),
+  UNIQUE KEY `login` (`login`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+INSERT INTO `tbusuarios` VALUES (1,'Marco Antônio','9689-9886','admin','admin','admin'),(2,'mauricio','9689-9789','mauricioppo','2345','tecnico'),(3,'Emmanuel','6565-6565','manucas','6789','gerente');
+
+CREATE TABLE `tbclientes` (
+  `idcli` int(11) NOT NULL AUTO_INCREMENT,
+  `nomecli` varchar(50) NOT NULL,
+  `endcli` varchar(100) DEFAULT NULL,
+  `telefonecli` varchar(50) NOT NULL,
+  `emailcli` varchar(50) NOT NULL,
+  PRIMARY KEY (`idcli`),
+  UNIQUE KEY `emailcli` (`emailcli`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+INSERT INTO `tbclientes` VALUES (1,'Janio Cruz','Uberlândia-MG','9999-9945','j.cruz@gmail.com'),(2,'Camila Barbosa','Lisboa','3215-4215','camila@gmail.com'),(3,'Robson Freitas','Sao Paulo-SP','3215-4215','freitas@gmail.com'),(4,'Jamerson Matias','Itu','3215-4215','jms@gmail.com'),(5,'Justino Custódio','Tocantins','3215-4215','custodio@gmail.com'),(6,'Jacó de Lis','Japao','3215-4215','jaco@gmail.com');
+
+ALTER TABLE tbusuarios CHANGE usuario nome VARCHAR(50);
+
+alter table tbusuarios modify column nome varchar(200) not null, 
+modify column telefone varchar(30) not null,
+modify column login varchar(50) not null,
+modify column senha varchar(50) not null,
+modify column perfil varchar(30) not null;
+
+alter table tbclientes modify column nomecli varchar(150) not null,
+modify column endcli varchar(150),
+modify column emailcli varchar(100) not null unique;
+
+CREATE TABLE `tbos` (
+  `os` int(11) NOT NULL AUTO_INCREMENT,
+  `data_os` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tipo` varchar(30) NOT NULL,
+  `situacao` varchar(50) NOT NULL,
+  `equipamento` varchar(150) NOT NULL,
+  `defeito` varchar(150) NOT NULL,
+  `servico` varchar(150) NOT NULL,
+  `valor` decimal(10,2) DEFAULT NULL,
+  `idcli` int(11) NOT NULL,
+  `idtec` int(11) NOT NULL,
+  PRIMARY KEY (`os`),
+  KEY `idcli` (`idcli`),
+  CONSTRAINT `tbos_ibfk_1` FOREIGN KEY (`idcli`) REFERENCES `tbclientes` (`idcli`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+ALTER TABLE tbos ADD CONSTRAINT tbos_ibfk_2 
+FOREIGN KEY(idtec) REFERENCES tbusuarios(iduser);
+
+-----------------------------------------------
+-----------------------------------------------
+
 
