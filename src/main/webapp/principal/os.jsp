@@ -472,6 +472,12 @@ function carregaCombos(){
 
 function criarDelete(){
 	
+	// por isso se justifica a criação do campo hidden para acao, 
+	// pois ao utilizarmos a função delete sem ajax, setamos o campo
+	// escondido para o valor deletar e submetemos o form via get; 
+	// ao chegar na Servlet, o campo é capturado dentro do doGet pelo
+	// comando String id = request.getParameter("id");
+	
 	if(confirm("Deseja realmente exluir este cliente?")){
 		document.getElementById("formCli").method = 'get';
 		document.getElementById("acao").value = 'deletar';
