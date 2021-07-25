@@ -105,6 +105,33 @@ public Usuario gravarUsuario(Usuario objeto) throws Exception {
 		return retorno;
 	}
 	
+	public List<Usuario> listar() throws Exception {
+		
+		List<Usuario> retorno = new ArrayList<Usuario>();
+		
+		String pesquisar = "select * from tbusuarios;";
+		PreparedStatement statement = connection.prepareStatement(pesquisar);
+		
+		ResultSet resultado = statement.executeQuery();
+		
+		while (resultado.next()) { /*percorrer as linhas de resultado do SQL*/
+			
+			Usuario usuario = new Usuario();
+			
+			
+			usuario.setId(resultado.getInt("iduser"));
+			usuario.setNome(resultado.getString("nome"));
+			usuario.setFone(resultado.getString("telefone"));
+			usuario.setLogin(resultado.getString("login"));
+			usuario.setSenha(resultado.getString("senha"));
+			usuario.setPerfil(resultado.getString("perfil"));
+			
+			retorno.add(usuario);
+		}
+		
+		
+		return retorno;
+	}
 	
 	public Usuario consultaUsuario(String login) throws Exception  {
 		

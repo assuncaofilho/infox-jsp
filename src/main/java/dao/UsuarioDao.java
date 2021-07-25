@@ -12,6 +12,8 @@ public interface UsuarioDao {
 	
 	public List<Usuario> consultaUsuarioList(String nome) throws Exception;
 	
+	public List<Usuario> listar() throws Exception;
+	
 	public Usuario consultaUsuario(String login) throws Exception;
 	
 	public Usuario consultaUsuarioID(String id) throws Exception;

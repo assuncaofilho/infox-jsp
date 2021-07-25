@@ -18,7 +18,7 @@ public abstract class ConexaoUtil {  //não permite instanciação da classe
 			
 			
 			String url = "jdbc:mysql://localhost:3306/dbinfox";
-			String driver = "com.mysql.jdbc.Driver";
+			String driver = "com.mysql.cj.jdbc.Driver";
 			String user = "root";
 			String senha = "root";
 			

@@ -10,6 +10,8 @@ public interface ClienteDao {
 	
 	public List<Cliente> consultaListar(String nome) throws Exception;
 	
+	public List<Cliente> listar() throws Exception;
+	
 	public Cliente consulta(String login) throws Exception;
 	
 	public Cliente consultaID(String id) throws Exception;

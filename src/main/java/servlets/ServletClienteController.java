@@ -74,8 +74,19 @@ public class ServletClienteController extends HttpServlet {
 			 
 			 
 			    request.setAttribute("msg", "Cliente em edição");
+				List<Cliente> allCli = clienteDao.listar();
+				request.setAttribute("allCli", allCli);
 				request.setAttribute("cliente", cliente);
 				request.getRequestDispatcher("principal/cliente.jsp").forward(request, response);
+		 }
+		 
+		 else if (acao != null && !acao.isEmpty() && acao.equals("listarClientes")) {
+			 
+			 List<Cliente> allCli = clienteDao.listar();
+			 request.setAttribute("allCli", allCli);
+			 request.getRequestDispatcher("principal/cliente.jsp").forward(request, response);
+			 
+			 
 		 }
 		 
 		 else {
@@ -123,6 +134,8 @@ public class ServletClienteController extends HttpServlet {
 		cliente = clienteDao.gravar(cliente); // grava e retorna o mesmo objeto vindo de uma consulta;
 		
 		request.setAttribute("msg", "Cliente cadastrado com sucesso!");
+		List<Cliente> allCli = clienteDao.listar();
+		request.setAttribute("allCli", allCli);
 		
 		
 		}else {
@@ -132,6 +145,8 @@ public class ServletClienteController extends HttpServlet {
 			//update
 			cliente = clienteDao.gravar(cliente);
 			request.setAttribute("msg", "Cliente atualizado com sucesso!");
+			List<Cliente> allCli = clienteDao.listar();
+			request.setAttribute("allCli", allCli);
 	
 				
 			}else {
@@ -145,6 +160,8 @@ public class ServletClienteController extends HttpServlet {
 		}
 		
 		request.setAttribute("cliente", cliente);
+		List<Cliente> allCli = clienteDao.listar();
+		request.setAttribute("allCli", allCli);
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/cliente.jsp");
 		redirecionar.forward(request, response);
 		

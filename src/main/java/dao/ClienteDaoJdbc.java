@@ -172,4 +172,36 @@ public class ClienteDaoJdbc implements ClienteDao {
 		
 	}
 
+
+	
+	public List<Cliente> listar() throws Exception {
+		
+		
+		List<Cliente> clientesList = new ArrayList<Cliente>();
+		
+		String pesquisar = "select * from tbclientes;";
+		PreparedStatement statement = connection.prepareStatement(pesquisar);
+		
+		ResultSet resultado = statement.executeQuery();
+		
+		while (resultado.next()) { 
+			
+			Cliente cliente = new Cliente();
+			
+			
+			cliente.setId(resultado.getInt("idcli"));
+			cliente.setNome(resultado.getString("nomecli"));
+			cliente.setEnd(resultado.getString("endcli"));
+			cliente.setFone(resultado.getString("telefonecli"));
+			cliente.setEmail(resultado.getString("emailcli"));
+			
+			
+			clientesList.add(cliente);
+		}
+		
+		
+		return clientesList;
+		
+	}
+
 }

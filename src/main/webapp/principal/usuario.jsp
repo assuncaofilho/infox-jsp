@@ -98,6 +98,29 @@
                                                 
                                                 <span id="msg">${msg}</span>
                                                 
+                                                <div style="height: 300px; overflow: scroll;">
+											<table class="table" id="clitab">
+												<thead>
+													<tr>
+														<th scope="col">ID_USUARIO</th>
+														<th scope="col">Nome</th>
+														<th scope="col">Ver</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${allUsu}" var="usu">
+													<tr>
+													<td><c:out value="${usu.id}"></c:out></td>
+													<td><c:out value="${usu.nome}"></c:out></td>
+													<td><a class="btn btn-success" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscareditar&id=${usu.id}">Detalhes</a></td>
+													</tr>
+													</c:forEach>
+
+
+												</tbody>
+											</table>
+										</div>
+                                                
                                     </div>
                                     <!-- Page-body end -->
                                 </div>
