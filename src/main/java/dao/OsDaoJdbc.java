@@ -3,6 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import connection.ConexaoUtil;
 import model.Os;
@@ -10,6 +12,7 @@ import model.Os;
 public class OsDaoJdbc implements OsDao {
 
 	private Connection connection;
+
 	
 	public OsDaoJdbc() {
 		connection = ConexaoUtil.getConnection();
@@ -115,6 +118,41 @@ public class OsDaoJdbc implements OsDao {
                     
                  }
             return encontrada;
+	}
+	
+	public List<Os> listar() throws Exception {
+	
+        
+        String pesquisar = "select * from tbos";
+        
+            PreparedStatement pst = connection.prepareStatement(pesquisar);
+           
+            ResultSet rs = pst.executeQuery();
+            
+            Os encontrada = new Os();
+            
+            List<Os> listOs = new ArrayList<Os>();
+            
+            
+            
+                while(rs.next()){
+                	
+                  
+                  encontrada.setId(rs.getInt("os")); 
+                  encontrada.setData(rs.getString("data_os"));
+                  encontrada.setTipo(rs.getString("tipo"));
+                  encontrada.setSituacao(rs.getString("situacao")); 
+                  encontrada.setEquipamento(rs.getString("equipamento")); 
+                  encontrada.setDefeito(rs.getString("defeito"));
+                  encontrada.setServico(rs.getString("servico")); 
+                  encontrada.setValor(rs.getDouble("valor"));
+                  encontrada.setIdcli(rs.getInt("idcli"));
+                  encontrada.setIdtec(rs.getInt("idtec"));
+                  
+                  listOs.add(encontrada);
+                    
+                 }
+            return listOs;
 	}
 
 	

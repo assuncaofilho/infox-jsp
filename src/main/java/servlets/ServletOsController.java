@@ -32,6 +32,8 @@ public class ServletOsController extends HttpServlet {
 	private ClienteDao clienteDao = DaoFactory.createClienteDao();
 	private UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 	
+	
+	
 	private String dataOsFormatada(String dataOs) {
 	     
 		try {
@@ -46,6 +48,33 @@ public class ServletOsController extends HttpServlet {
 		}
 		
 	}
+	
+	
+	/*private List<Os> atualizarOs() {
+
+		try {
+
+			List<Os> allOs = osDao.listar();
+
+			List<Os> osFormatada = new ArrayList<Os>();
+
+			for (int i = 0; i < allOs.size(); i++) {
+
+				String dataBanco = allOs.get(i).getData();
+
+				String dataFormatada = dataOsFormatada(dataBanco);
+
+				allOs.get(i).setData(dataFormatada);
+
+				osFormatada.add(allOs.get(i));
+			}
+
+			return osFormatada;
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}*/
 
     public ServletOsController() {
     }
@@ -70,6 +99,7 @@ public class ServletOsController extends HttpServlet {
 				 String id = request.getParameter("id");
 				 
 				 osDao.excluir(id);
+				 
 				 
 				 response.getWriter().write(" Os excluída com sucesso!");
 				 
@@ -100,7 +130,9 @@ public class ServletOsController extends HttpServlet {
 			     Cliente cliente = clienteDao.consultaID(os.getIdcli().toString());
 			     
 			     Usuario tecAtual = usuarioDao.consultaUsuarioID(os.getIdtec().toString());
-			 
+			     
+			    List<Os> allOs = osDao.listar();
+			    request.setAttribute("allOs", allOs);
 			 
 			    request.setAttribute("msg", "OS em edição");
 				request.setAttribute("os", os);
@@ -110,10 +142,19 @@ public class ServletOsController extends HttpServlet {
 				request.setAttribute("cboSituacao", os.getSituacao());
 				request.setAttribute("nomeCli", cliente.getNome());
 				request.setAttribute("idCli", cliente.getId());
+				
 				request.getRequestDispatcher("principal/os.jsp").forward(request, response);
+				
+				
+		 }else if (acao != null && !acao.isEmpty() && acao.equals("listarOs")) {
+			 	
+			 	List<Os> allOs = osDao.listar();
+			 	request.setAttribute("allOs", allOs);
+			 	//request.setAttribute("msg", allOs.get(0).getId() + "e" + allOs.get(1).getId());
+			 	request.getRequestDispatcher("principal/os.jsp").forward(request, response);
+			 
+			 
 		 }
-
-		 
 		 
 		 else if (acao != null && !acao.isEmpty() && acao.equals("buscartecnicoajax")) {
 				
@@ -144,6 +185,8 @@ public class ServletOsController extends HttpServlet {
 		 }
 		 
 		 else {
+			 List<Os> allOs = osDao.listar();
+		     request.setAttribute("allOs", allOs);
 			 request.getRequestDispatcher("principal/os.jsp").forward(request, response);
 		 }
 		 
@@ -232,6 +275,8 @@ public class ServletOsController extends HttpServlet {
 		request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
 		request.setAttribute("cboTipo", os.getTipo());
 		request.setAttribute("cboSituacao", os.getSituacao());
+		List<Os> allOs = osDao.listar();
+	    request.setAttribute("allOs", allOs);
 		RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
 		redirecionar.forward(request, response);
 		
@@ -252,6 +297,8 @@ public class ServletOsController extends HttpServlet {
 			request.setAttribute("nomeCli", clienteDao.consultaID(os.getIdcli().toString()).getNome());
 			request.setAttribute("cboTipo", os.getTipo());
 			request.setAttribute("cboSituacao", os.getSituacao());
+			List<Os> allOs = osDao.listar();
+		    request.setAttribute("allOs", allOs);
 			RequestDispatcher redirecionar = request.getRequestDispatcher("principal/os.jsp");
 			redirecionar.forward(request, response);
 	

@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import model.Os;
 
 public interface OsDao {
@@ -9,5 +11,7 @@ public interface OsDao {
 	public Os pesquisar(String id) throws Exception;
 	
 	public void excluir(String id) throws Exception;
+	
+	public List<Os> listar() throws Exception;
 
 }

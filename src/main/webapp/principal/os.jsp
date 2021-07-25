@@ -172,8 +172,35 @@
                                              </div>
                                                 
                                          <span id="msg">${msg}</span>
-                                                
-                                    </div>
+
+
+										<div style="height: 300px; overflow: scroll;">
+											<table class="table" id="ostab">
+												<thead>
+													<tr>
+														<th scope="col">ID_OS</th>
+														<th scope="col">Equipamento</th>
+														<th scope="col">Data</th>
+														<th scope="col">Ver</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${allOs}" var="os">
+													<tr>
+													<td><c:out value="${os.id}"></c:out></td>
+													<td><c:out value="${os.equipamento}"></c:out></td>
+													<td><c:out value="${os.data}"></c:out></td>
+													<td><a class="btn btn-success" href="<%= request.getContextPath() %>/ServletOsController?acao=buscareditar&id=${os.id}">Detalhes</a></td>
+													</tr>
+													</c:forEach>
+
+
+												</tbody>
+											</table>
+										</div>
+
+
+									</div>
                                     <!-- Page-body end -->
                                 </div>
                                 <div id="styleSelector"> </div>
@@ -333,13 +360,15 @@
 
 
 window.onload = function () { // chama a função carregaCombos assim que a tela é totalmente carregada!
-    carregaCombos();
-    
+    carregaCombos(); 
+   
 }
 
+	
 function setTwoNumberDecimal(event){
 	this.value = parseFloat(this.value).toFixed(2);
 }
+
 
 function check_form(){
 	
