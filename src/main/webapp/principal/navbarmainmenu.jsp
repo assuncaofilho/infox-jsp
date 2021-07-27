@@ -71,9 +71,9 @@
                                           </a>
                                       </li>
                                       <li class=" ">
-                                          <a href="tabs.html" class="waves-effect waves-dark">
+                                          <a href="<%= request.getContextPath()%>/principal/relatorios.jsp" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Tabs</span>
+                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Relatórios</span>
                                               <span class="pcoded-mcaret"></span>
                                           </a>
                                       </li>
