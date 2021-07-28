@@ -1,18 +1,27 @@
 package servlets;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import connection.ConexaoUtil;
 import dao.ClienteDao;
 import dao.DaoFactory;
 import dao.OsDao;
 import dao.UsuarioDao;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +29,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Cliente;
 import model.Os;
 import model.Usuario;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 
 @WebServlet(urlPatterns = {"/ServletOsController"})
@@ -183,6 +196,68 @@ public class ServletOsController extends HttpServlet {
 				 
 				 response.getWriter().write(json);
 		 }
+		 else if (acao != null && !acao.isEmpty() && acao.equals("imprimirOs")) {
+				
+				
+				
+				String nomearquivo = request.getParameter("nomearquivo");
+			
+				String erro = "";
+				
+				/*Caminho relativo do arquivo jasper*/
+				String caminhoJasper = "WEB-INF/report/"+nomearquivo+".jasper";
+				
+				/*caminho relativo do arquivo de img do ícone*/
+				String caminhoIcone = "WEB-INF/icons/X.png";
+				 
+				
+				byte[] bytes = null;
+				
+				ServletContext context = getServletContext();
+				
+				try {
+					JasperReport relatorio = (JasperReport) JRLoader.loadObjectFromFile(
+							context.getRealPath(caminhoJasper));
+					
+	
+						
+			
+					InputStream is = new FileInputStream(context.getRealPath(caminhoIcone));
+					
+					BufferedImage image = ImageIO.read(is);
+					
+					HashMap<String, Object> param = new HashMap<String, Object>();
+					param.put("os", request.getParameter("idostoprint"));
+					param.put("logo", image );
+					
+					
+					bytes = JasperRunManager.runReportToPdf(relatorio, param, ConexaoUtil.getConnection());
+					
+					
+				} catch (JRException e) {
+					e.printStackTrace();
+					erro = e.getMessage();
+				} finally {
+
+					if (bytes != null) {
+						response.setContentType("application/pdf");
+						response.setContentLength(bytes.length);
+
+						ServletOutputStream sos = response.getOutputStream();
+						sos.write(bytes);
+						sos.flush();
+						sos.close();
+						
+					} else {
+						
+							RequestDispatcher redireciona = request.getRequestDispatcher("principal/os.jsp");
+							request.setAttribute("msg", erro);
+							redireciona.forward(request, response);
+							
+						}
+					}
+				}
+
 		 
 		 else {
 			 List<Os> allOs = osDao.listar();

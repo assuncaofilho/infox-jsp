@@ -499,7 +499,7 @@ function imprimirOs(){
 			document.getElementById("formOS").method = 'get';
 			document.getElementById("formOS").target = '_self';
 			document.getElementById("acao").value = 'imprimirOs';
-			document.getElementById("formOS").action = '<%=request.getContextPath()%>/RelatorioServlet';
+			document.getElementById("formOS").action = '<%=request.getContextPath()%>/ServletOsController';
 			document.getElementById("idostoprint").value = idOs;
 			document.getElementById("nomearquivo").value = 'Os';
 			document.getElementById("formOS").submit();
