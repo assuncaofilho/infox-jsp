@@ -13,5 +13,6 @@ public interface OsDao {
 	public void excluir(String id) throws Exception;
 	
 	public List<Os> listar() throws Exception;
+	
 
 }

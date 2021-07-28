@@ -129,7 +129,6 @@ public class OsDaoJdbc implements OsDao {
            
             ResultSet rs = pst.executeQuery();
             
-            Os encontrada = new Os();
             
             List<Os> listOs = new ArrayList<Os>();
             
@@ -137,7 +136,8 @@ public class OsDaoJdbc implements OsDao {
             
                 while(rs.next()){
                 	
-                  
+                  Os encontrada = new Os();
+                	
                   encontrada.setId(rs.getInt("os")); 
                   encontrada.setData(rs.getString("data_os"));
                   encontrada.setTipo(rs.getString("tipo"));

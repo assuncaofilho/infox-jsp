@@ -46,14 +46,18 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h4>Cadastro de Ordem de Serviço</h4>
+                                                        
                                                             
                                                         
                                                     </div>
                                                     <div class="card-block">
                                                         <h4 class="sub-title">Dados da OS</h4>
+                                                        
                                                         <form id="formOS" action="<%= request.getContextPath() %>/ServletOsController" onsubmit= "return check_form()" method="post"  accept-charset="utf-8">
                                                         
                                                         	<input type="hidden" name="acao" id="acao" value="">
+                                                        	<input type="hidden" name="nomearquivo" id="nomearquivo" value="">
+                                                        	<input type="hidden" name="idostoprint" id="idostoprint" value="">
                                                         
                                                             <div class="form-group row">
                                                                 <label class="col-sm-2 col-form-label">ID</label>
@@ -159,7 +163,7 @@
 												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleBuscarOS">Buscar OS</button>
 												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleBuscarCliente">Buscar Cliente</button>
 												            <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#exampleBuscarTecnico">Buscar Técnico</button>
-												            
+												            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="imprimirOs();">IMPRIMIR OS</button>
                                                             
                                                      </form>
                                                             
@@ -478,225 +482,267 @@ function criarDelete(){
 	// ao chegar na Servlet, o campo é capturado dentro do doGet pelo
 	// comando String id = request.getParameter("id");
 	
-	if(confirm("Deseja realmente exluir este cliente?")){
-		document.getElementById("formCli").method = 'get';
+	if(confirm("Deseja realmente exluir esta OS?")){
+		document.getElementById("formOS").method = 'get';
 		document.getElementById("acao").value = 'deletar';
-		document.getElementById("formCli").submit();
+		document.getElementById("formOS").submit();
 	}
 }
 
-
-
-function criarDeleteComAjax(){
-	
-	
-	
-	//var count = 0;
-	
-	//for(p=0;p<elementos.legth;p++){
-	//	if(elementos[p].value != null && elementos[p].value != "" && elementos[p].trim() != ""){
-	//		count = count + 1;
-	//	}
-	//}
+function imprimirOs(){
 	
 	var idOs = document.getElementById("id").value;
 	
 	if(idOs != null && idOs != "" && idOs.trim() != "" ){
-	
-	if(confirm("Deseja realmente excluir esta OS?")){
 		
-		var urlAction = document.getElementById("formOS").action;
-		var id = document.getElementById("id").value;
-		
-		$.ajax({
-			
-			method: "get",
-			url: urlAction,
-			data: "id=" + id + "&acao=deletarajax",
-			success: function (response) {
-				
-				limparNovaOs();
-				document.getElementById("msg").textContent = "";
-				alert(response);
-				
-			}		
-		
-			}).fail(function(xhr, status, errorThrown){
-				alert("Erro ao excluir OS por ID: " + xhr.responseText);
-		});
-		
-		
-	}
-	
-  }else{
-	  alert("Busque uma OS para ser excluída!");
-  }
-	
-}
-	
+		if(confirm("Deseja realmente imprimir esta OS?")){
+			document.getElementById("formOS").method = 'get';
+			document.getElementById("formOS").target = '_self';
+			document.getElementById("acao").value = 'imprimirOs';
+			document.getElementById("formOS").action = '<%=request.getContextPath()%>/RelatorioServlet';
+			document.getElementById("idostoprint").value = idOs;
+			document.getElementById("nomearquivo").value = 'Os';
+			document.getElementById("formOS").submit();
 
-
-
-function limparNovaOs(){
-	var elementos = document.getElementById("formOS").elements;
-	
-	for (p = 0; p < elementos.length; p++){
-		elementos[p].value = "";
-	}
-	
-	document.getElementById("tipo").selectedIndex = 0;    //prevenindo problemas de campo vazio!
-	document.getElementById("situacao").selectedIndex = 0;
-	
-	
-	document.getElementById("msg").textContent = "";
-}
-
-
-function buscaTecnicoAjax(){
-	
-	
-	
-	var nomeTec = document.getElementById("nomeTec").value;
-	
-	var urlAction = document.getElementById("formOS").action;
-	
-	if ( nomeTec != null && nomeTec != "" && nomeTec.trim() != ""){
-		
-			$.ajax({
-			
-					method: "get",
-					url: urlAction,
-					data: "nomeTec=" + nomeTec + "&acao=buscartecnicoajax",
-					success: function (response) {
-						
-					//alert(response);
-						
-					var json = JSON.parse(response);
-					
-					//alert(json.id);
-					
-					//console.info(json);
-					
-					//alert(json[0].nome);
-						
-					if(json.id == null){
-					document.getElementById("msgResultTec").textContent = ""+json.length+" resultado(s) para esta busca.";
-					}
-						
-						$('#tbtecResult > tbody > tr').remove();
-						
-						for( var p = 0; p < json.length; p++){
-						
-						$('#tbtecResult > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td><td><button type="button" class="btn btn-info" onclick="verEditarTecOs(\''+json[p].id+'\',\''+json[p].nome+'\');">Selecionar</button></td></tr>');
-											
-						
-						}
-					}		
-				
-					}).fail(function(xhr, status, errorThrown){
-						alert("Erro ao buscar técnico por nome: " + xhr.responseText);
-				});
-		
-	}
-}
-
-
-function buscaOsAjax(){
-	
-	
-	
-	var idBuscaOS = document.getElementById("idBuscaOS").value;
-	
-	var urlAction = document.getElementById("formOS").action;
-	
-	if ( idBuscaOS != null && idBuscaOS != "" && idBuscaOS.trim() != ""){
-		
-			$.ajax({
-			
-					method: "get",
-					url: urlAction,
-					data: "idBuscaOS=" + idBuscaOS + "&acao=buscarajax",
-					success: function (response) {
-						
-					//alert(response);
-						
-					var json = JSON.parse(response);
-					
-					//alert(json.id);
-					
-					//console.info(json);
-					
-					//alert(json[0].nome);
-						
-					if(json.id == null){
-					document.getElementById("msgResultOs").textContent = " 0 resultado(s) para esta busca.";
-					}
-						
-						$('#tbosResult > tbody > tr').remove();
-						
-						$('#tbosResult > tbody').append('<tr> <td>'+json.id+'</td> <td>'+json.equipamento+'</td><td><button type="button" class="btn btn-info" onclick="verEditar('+json.id+');">Selecionar</button></td></tr>');
-											
-						
-						
-					}		
-				
-					}).fail(function(xhr, status, errorThrown){
-						alert("Erro ao buscar usuário por nome: " + xhr.responseText);
-				});
-		
-	}
-}
-
-function buscaClienteAjax(){
-	
-	
-	
-	var nomeCli = document.getElementById("nomeCli").value;
-	
-	var urlAction = document.getElementById("formOS").action;
-	
-	if ( nomeCli != null && nomeCli != "" && nomeCli.trim() != ""){
-		
-			$.ajax({
-			
-					method: "get",
-					url: urlAction,
-					data: "nomeCli=" + nomeCli + "&acao=buscarclienteajax",
-					success: function (response) {
-						
-					//alert(response);
-						
-					var json = JSON.parse(response);
-					
-					//alert(json.id);
-					
-					//console.info(json);
-					
-					//alert(json[0].nome);
-						
-					
-					document.getElementById("msgResultCli").textContent = " "+json.length+" resultado(s) para esta busca.";
-					
-						
-						$('#tbcliResult > tbody > tr').remove();
-						
-						for(p=0; p< json.length; p++){
-							
-						$('#tbcliResult > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td><td><button type="button" class="btn btn-info" onclick="verEditarCliOs(\''+json[p].id+'\',\''+json[p].nome+'\');">Selecionar</button></td></tr>');
-						}					
-						
-						
-					}		
-				
-					}).fail(function(xhr, status, errorThrown){
-						alert("Erro ao buscar cliente por nome: " + xhr.responseText);
-				});
-		
+			}
+		} else {
+			alert("Busque ou cadastre uma OS para imprimir.");
 		}
 	}
 
+	function criarDeleteComAjax() {
 
+		//var count = 0;
 
+		//for(p=0;p<elementos.legth;p++){
+		//	if(elementos[p].value != null && elementos[p].value != "" && elementos[p].trim() != ""){
+		//		count = count + 1;
+		//	}
+		//}
+
+		var idOs = document.getElementById("id").value;
+
+		if (idOs != null && idOs != "" && idOs.trim() != "") {
+
+			if (confirm("Deseja realmente excluir esta OS?")) {
+
+				var urlAction = document.getElementById("formOS").action;
+				var id = document.getElementById("id").value;
+
+				$.ajax({
+
+					method : "get",
+					url : urlAction,
+					data : "id=" + id + "&acao=deletarajax",
+					success : function(response) {
+
+						limparNovaOs();
+						document.getElementById("msg").textContent = "";
+						alert(response);
+
+					}
+
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao excluir OS por ID: " + xhr.responseText);
+				});
+
+			}
+
+		} else {
+			alert("Busque uma OS para ser excluída!");
+		}
+
+	}
+
+	function limparNovaOs() {
+		var elementos = document.getElementById("formOS").elements;
+
+		for (p = 0; p < elementos.length; p++) {
+			elementos[p].value = "";
+		}
+
+		document.getElementById("tipo").selectedIndex = 0; //prevenindo problemas de campo vazio!
+		document.getElementById("situacao").selectedIndex = 0;
+
+		document.getElementById("msg").textContent = "";
+	}
+
+	function buscaTecnicoAjax() {
+
+		var nomeTec = document.getElementById("nomeTec").value;
+
+		var urlAction = document.getElementById("formOS").action;
+
+		if (nomeTec != null && nomeTec != "" && nomeTec.trim() != "") {
+
+			$
+					.ajax(
+							{
+
+								method : "get",
+								url : urlAction,
+								data : "nomeTec=" + nomeTec
+										+ "&acao=buscartecnicoajax",
+								success : function(response) {
+
+									//alert(response);
+
+									var json = JSON.parse(response);
+
+									//alert(json.id);
+
+									//console.info(json);
+
+									//alert(json[0].nome);
+
+									if (json.id == null) {
+										document.getElementById("msgResultTec").textContent = ""
+												+ json.length
+												+ " resultado(s) para esta busca.";
+									}
+
+									$('#tbtecResult > tbody > tr').remove();
+
+									for (var p = 0; p < json.length; p++) {
+
+										$('#tbtecResult > tbody')
+												.append(
+														'<tr> <td>'
+																+ json[p].id
+																+ '</td> <td>'
+																+ json[p].nome
+																+ '</td><td><button type="button" class="btn btn-info" onclick="verEditarTecOs(\''
+																+ json[p].id
+																+ '\',\''
+																+ json[p].nome
+																+ '\');">Selecionar</button></td></tr>');
+
+									}
+								}
+
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert("Erro ao buscar técnico por nome: "
+										+ xhr.responseText);
+							});
+
+		}
+	}
+
+	function buscaOsAjax() {
+
+		var idBuscaOS = document.getElementById("idBuscaOS").value;
+
+		var urlAction = document.getElementById("formOS").action;
+
+		if (idBuscaOS != null && idBuscaOS != "" && idBuscaOS.trim() != "") {
+
+			$
+					.ajax(
+							{
+
+								method : "get",
+								url : urlAction,
+								data : "idBuscaOS=" + idBuscaOS
+										+ "&acao=buscarajax",
+								success : function(response) {
+
+									//alert(response);
+
+									var json = JSON.parse(response);
+
+									//alert(json.id);
+
+									//console.info(json);
+
+									//alert(json[0].nome);
+
+									if (json.id == null) {
+										document.getElementById("msgResultOs").textContent = " 0 resultado(s) para esta busca.";
+									}
+
+									$('#tbosResult > tbody > tr').remove();
+
+									$('#tbosResult > tbody')
+											.append(
+													'<tr> <td>'
+															+ json.id
+															+ '</td> <td>'
+															+ json.equipamento
+															+ '</td><td><button type="button" class="btn btn-info" onclick="verEditar('
+															+ json.id
+															+ ');">Selecionar</button></td></tr>');
+
+								}
+
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert("Erro ao buscar usuário por nome: "
+										+ xhr.responseText);
+							});
+
+		}
+	}
+
+	function buscaClienteAjax() {
+
+		var nomeCli = document.getElementById("nomeCli").value;
+
+		var urlAction = document.getElementById("formOS").action;
+
+		if (nomeCli != null && nomeCli != "" && nomeCli.trim() != "") {
+
+			$
+					.ajax(
+							{
+
+								method : "get",
+								url : urlAction,
+								data : "nomeCli=" + nomeCli
+										+ "&acao=buscarclienteajax",
+								success : function(response) {
+
+									//alert(response);
+
+									var json = JSON.parse(response);
+
+									//alert(json.id);
+
+									//console.info(json);
+
+									//alert(json[0].nome);
+
+									document.getElementById("msgResultCli").textContent = " "
+											+ json.length
+											+ " resultado(s) para esta busca.";
+
+									$('#tbcliResult > tbody > tr').remove();
+
+									for (p = 0; p < json.length; p++) {
+
+										$('#tbcliResult > tbody')
+												.append(
+														'<tr> <td>'
+																+ json[p].id
+																+ '</td> <td>'
+																+ json[p].nome
+																+ '</td><td><button type="button" class="btn btn-info" onclick="verEditarCliOs(\''
+																+ json[p].id
+																+ '\',\''
+																+ json[p].nome
+																+ '\');">Selecionar</button></td></tr>');
+									}
+
+								}
+
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert("Erro ao buscar cliente por nome: "
+										+ xhr.responseText);
+							});
+
+		}
+	}
 </script>
 
 

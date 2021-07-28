@@ -13,6 +13,7 @@ public abstract class DaoFactory { // classe modelo; não pode ser instanciada di
 	public static OsDao createOsDao() { // não depende de variável de instância;
 		return new OsDaoJdbc();
 	}
+	
 
 
 }
