@@ -86,6 +86,8 @@ public class ServletUsuarioController extends HttpServlet {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		 }
 		 
+				 
+			 
 		 else {
 			 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		 }
